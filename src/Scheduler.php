@@ -3,11 +3,11 @@
 namespace Kauri\Loan;
 
 
+use Kauri\Loan\Calculator\Interest\Regular;
+use Kauri\Loan\Calculator\Payment\Equal;
+
 class Scheduler
 {
-    const PAYMENT_FREQUENCY_MONTHLY = 1;
-    const PAYMENT_FREQUENCY_WEEKLY = 2;
-    const PAYMENT_FREQUENCY_YEARLY = 3;
     /**
      * @var null
      */
@@ -33,37 +33,26 @@ class Scheduler
         $this->yearlyInterestRate = $yearlyInterestRate;
     }
 
-    /**
-     * @return null
-     * @throws Exception
-     */
-    private function getMonthlyPaymentAmount()
-    {
-        $periodicInterestRate = $this->getPeriodicInterestRate();
-
-        $periodicPaymentAmount = $this->amountOfPrincipal * (
-                $periodicInterestRate + (
-                    $periodicInterestRate / (
-                        pow(1 + $periodicInterestRate, $this->numberOfPayments) - 1
-                    )
-                )
-            );
-
-        return round($periodicPaymentAmount, 2);
-    }
-
     public function getSchedule()
     {
         $schedule = array();
-        $paymentAmount = $this->getMonthlyPaymentAmount();
+        $interestCalculator = new Regular($this->yearlyInterestRate);
+
+        $paymentCalculator = new Equal($this->amountOfPrincipal, $this->numberOfPayments, $this->yearlyInterestRate);
+        $paymentAmount = round($paymentCalculator->getPaymentAmount(), 2);
+
         $principalLeft = $this->amountOfPrincipal;
 
         for ($i = 1; $i <= $this->numberOfPayments; $i++) {
-            $interest = round($principalLeft * $this->getPeriodicInterestRate(), 2);
-            $principal = $paymentAmount - $interest;
-            $principalLeft -= $principal;
+            $interest = round($interestCalculator->getInterestAmount($principalLeft), 2);
+            if ($i < $this->numberOfPayments) {
+                $principal = $paymentAmount - $interest;
+            } else {
+                $principal = $principalLeft;
+            }
+            $principalLeft = round($principalLeft - $principal, 2);
             $payment = array(
-                'payment' => $paymentAmount,
+                'payment' => $interest + $principal,
                 'principal' => $principal,
                 'interest' => $interest,
                 'principal_left' => $principalLeft
@@ -73,25 +62,5 @@ class Scheduler
         }
 
         return $schedule;
-    }
-
-    /**
-     * @param int $paymentFrequency
-     * @return float
-     * @throws Exception
-     */
-    private function getPeriodicInterestRate($paymentFrequency = self::PAYMENT_FREQUENCY_MONTHLY)
-    {
-        $dividor = null;
-
-        switch ($paymentFrequency) {
-            case self::PAYMENT_FREQUENCY_MONTHLY:
-                $dividor = 12;
-                break;
-            default:
-                throw new Exception('Payment frequency support not implemented');
-        }
-
-        return $this->yearlyInterestRate / $dividor / 100;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace KauriKK\Loan;
+namespace Kauri\Loan;
 
 
 class LoanPayment
