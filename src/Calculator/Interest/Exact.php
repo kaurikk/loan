@@ -8,15 +8,11 @@ use Kauri\Loan\Calculator\Interest;
 class Exact extends Interest
 {
     /**
-     * @param $principal
-     * @param int $period number on days
-     * @return mixed
+     * @param int $paymentFrequency
+     * @return float
      */
-    public function getInterestAmount($principal, $period)
+    protected function getPeriodicInterestRate($paymentFrequency = self::PAYMENT_FREQUENCY_DAILY)
     {
-        $periodicInterestRate = $this->getPeriodicInterestRate(self::PAYMENT_FREQUENCY_DAILY);
-        $interestAmount = ($principal * $period * $periodicInterestRate);
-        return $interestAmount;
+        return parent::getPeriodicInterestRate($paymentFrequency);
     }
-
 }

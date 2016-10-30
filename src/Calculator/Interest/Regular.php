@@ -14,8 +14,6 @@ class Regular extends Interest
      */
     public function getInterestAmount($principal, $period = 1)
     {
-        $periodicInterestRate = $this->getPeriodicInterestRate();
-        $interestAmount = ($principal * $period * $periodicInterestRate);
-        return $interestAmount;
+        return parent::getInterestAmount($principal, $period);
     }
 }
