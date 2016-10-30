@@ -26,8 +26,6 @@ abstract class Calculator
 
     protected function getPeriodicInterestRate($paymentFrequency = self::PAYMENT_FREQUENCY_MONTHLY)
     {
-        $dividor = null;
-
         switch ($paymentFrequency) {
             case self::PAYMENT_FREQUENCY_MONTHLY:
                 $dividor = 12;

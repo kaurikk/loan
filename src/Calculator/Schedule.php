@@ -7,11 +7,7 @@ use Kauri\Loan\Calculator;
 
 class Schedule extends Calculator
 {
-    /**
-     * @param $noOfPayments
-     * @return array
-     */
-    public static function calculate($noOfPayments)
+    public static function calculate(/*$noOfPayments*/)
     {
         $paymentDates = array(
 

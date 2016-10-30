@@ -7,5 +7,5 @@ use Kauri\Loan\Calculator;
 
 abstract class Interest extends Calculator
 {
-    abstract function getInterestAmount($principal, $period);
+    abstract public function getInterestAmount($principal, $period);
 }
