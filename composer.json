@@ -10,7 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "KauriKK\\Loan\\": "src/"
+      "Kauri\\Loan\\": "src/"
     }
   },
   "require": {
