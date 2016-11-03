@@ -2,65 +2,80 @@
 
 namespace Kauri\Loan;
 
-
-use Kauri\Loan\Calculator\Interest\Regular;
-use Kauri\Loan\Calculator\Payment\Equal;
-
+/**
+ * Class Scheduler
+ */
 class Scheduler
 {
     /**
-     * @var null
+     * @var int
      */
-    private $yearlyInterestRate = null;
+    private $noOfPayments;
     /**
-     * @var null
+     * @var DateTime
      */
-    private $amountOfPrincipal = null;
+    private $startDate;
     /**
-     * @var null
+     * @var array
      */
-    private $numberOfPayments = null;
+    private $scheduleDates;
 
     /**
-     * @param $amountOfPrincipal
-     * @param $numberOfPayments
-     * @param $yearlyInterestRate
+     * @var string
      */
-    public function __construct($amountOfPrincipal, $numberOfPayments, $yearlyInterestRate)
+    private $dateIntervalPattern;
+
+    /**
+     * Scheduler constructor.
+     * @param $noOfPayments
+     * @param \DateTimeInterface $startDate
+     * @param $dateIntervalPattern
+     */
+    public function __construct($noOfPayments, \DateTimeInterface $startDate, $dateIntervalPattern)
     {
-        $this->amountOfPrincipal = $amountOfPrincipal;
-        $this->numberOfPayments = $numberOfPayments;
-        $this->yearlyInterestRate = $yearlyInterestRate;
+        $this->noOfPayments = $noOfPayments;
+        $this->startDate = new \DateTime($startDate->format('Y-m-d'), new \DateTimeZone('UTC'));
+        $this->dateIntervalPattern = $dateIntervalPattern;
+        $this->scheduleDates = $this->generateSchedule();
     }
 
-    public function getSchedule()
+    /**
+     * @return array
+     */
+    private function generateSchedule()
     {
         $schedule = array();
-        $interestCalculator = new Regular($this->yearlyInterestRate);
+        $dateInterval = new \DateInterval($this->dateIntervalPattern);
+        $period = new \DatePeriod($this->startDate, $dateInterval, $this->noOfPayments);
 
-        $paymentCalculator = new Equal($this->amountOfPrincipal, $this->numberOfPayments, $this->yearlyInterestRate);
-        $paymentAmount = round($paymentCalculator->getPaymentAmount(), 2);
-
-        $principalLeft = $this->amountOfPrincipal;
-
-        for ($i = 1; $i <= $this->numberOfPayments; $i++) {
-            $interest = round($interestCalculator->getInterestAmount($principalLeft), 2);
-            if ($i < $this->numberOfPayments) {
-                $principal = $paymentAmount - $interest;
-            } else {
-                $principal = $principalLeft;
+        foreach ($period as $iteration => $date) {
+            if ($date != $this->startDate) {
+                $schedule[$iteration] = $date;
             }
-            $principalLeft = round($principalLeft - $principal, 2);
-            $payment = array(
-                'payment' => $interest + $principal,
-                'principal' => $principal,
-                'interest' => $interest,
-                'principal_left' => $principalLeft
-            );
-
-            $schedule[$i] = $payment;
         }
 
         return $schedule;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSchedule()
+    {
+        return $this->scheduleDates;
+    }
+
+    public function getNoOfPayments()
+    {
+        return $this->noOfPayments;
+    }
+
 }
