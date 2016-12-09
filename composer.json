@@ -13,6 +13,11 @@
       "Kauri\\Loan\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Kauri\\Loan\\Test\\": "tests/"
+    }
+  },
   "require": {
     "php": ">=5.6"
   },

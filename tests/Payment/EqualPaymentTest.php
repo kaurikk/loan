@@ -1,6 +1,6 @@
 <?php
 
-namespace Kauri\Loan;
+namespace Kauri\Loan\Test;
 
 use Kauri\Loan\FinancialCalculator\Payment\Equal;
 

@@ -47,7 +47,8 @@ class PaymentsCalculator
             /**
              * Calculate payment amount
              */
-            $paymentCalculator = new Equal($this->amountOfPrincipal, $this->numberOfPayments, $this->yearlyInterestRate);
+            $paymentCalculator = new Equal($this->amountOfPrincipal, $this->numberOfPayments,
+                $this->yearlyInterestRate);
             $paymentAmount = round($paymentCalculator->getPaymentAmount(), 2);
 
             /**
@@ -126,7 +127,7 @@ class PaymentsCalculator
 
     private function calculatePeriodLength($periodStart, $periodEnd)
     {
-        $diff = (int)$periodEnd->diff($periodStart)->format('%d') + 1;
+        $diff = (int) $periodEnd->diff($periodStart)->format('%d') + 1;
         return $diff;
     }
 

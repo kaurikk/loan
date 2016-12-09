@@ -1,7 +1,9 @@
 <?php
 
-namespace Kauri\Loan;
+namespace Kauri\Loan\Test;
 
+
+use Kauri\Loan\RepaymentDateCalculator;
 
 class RepaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
 {

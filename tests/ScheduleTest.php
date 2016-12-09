@@ -1,7 +1,10 @@
 <?php
 
-namespace Kauri\Loan;
+namespace Kauri\Loan\Test;
 
+
+use Kauri\Loan\PaymentsCalculator;
+use Kauri\Loan\RepaymentDateCalculator;
 
 class ScheduleTest extends \PHPUnit_Framework_TestCase
 {

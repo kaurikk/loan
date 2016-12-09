@@ -1,12 +1,17 @@
 <?php
 
-namespace Kauri\Loan;
+namespace Kauri\Loan\Test;
 
 
 use Kauri\Loan\FinancialCalculator\Interest\Exact;
 
-class ExactInterestTest extends \PHPUnit_Framework_TestCase
+class ExactInterestTest extends InterestTest
 {
+    protected $testData = [
+        [360, 100, 10, 10],
+        [180, 100, 29, 14.5]
+    ];
+
     /**
      * @dataProvider loanData
      * @param $principal
@@ -20,13 +25,4 @@ class ExactInterestTest extends \PHPUnit_Framework_TestCase
         $interest = $calculator->getInterestAmount($principalBalance, $noOfDays);
         $this->assertEquals($expectedInterest, $interest);
     }
-
-    public function loanData()
-    {
-        return [
-            [360, 100, 10, 10],
-            [180, 100, 29, 14.5]
-        ];
-    }
-
 }
