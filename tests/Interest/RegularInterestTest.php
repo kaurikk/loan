@@ -7,15 +7,28 @@ use Kauri\Loan\FinancialCalculator\Interest\Regular;
 
 class RegularInterestTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetInterestAmount()
+    /**
+     * @dataProvider loanData
+     * @param $principal
+     * @param $principalBalance
+     * @param $interestAmount
+     */
+    public function testGetInterestAmount($principal, $principalBalance, $interestAmount)
     {
-        $calculator = new Regular(360);
-        $interest = $calculator->getInterestAmount(100);
-        $this->assertEquals(30, $interest);
+        $calculator = new Regular($principal);
+        $interest = $calculator->getInterestAmount($principalBalance);
+        $this->assertEquals($interestAmount, $interest);
+    }
 
-        $calculator = new Regular(180);
-        $interest = $calculator->getInterestAmount(100);
-        $this->assertEquals(15, $interest);
+    /**
+     * @return array
+     */
+    public function loanData()
+    {
+        return [
+            [360, 100, 30],
+            [180, 100, 15]
+        ];
     }
 
 }

@@ -7,15 +7,26 @@ use Kauri\Loan\FinancialCalculator\Interest\Exact;
 
 class ExactInterestTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetInterestAmount()
+    /**
+     * @dataProvider loanData
+     * @param $principal
+     * @param $principalBalance
+     * @param $noOfDays
+     * @param $expectedInterest
+     */
+    public function testGetInterestAmount($principal, $principalBalance, $noOfDays, $expectedInterest)
     {
-        $calculator = new Exact(360);
-        $interest = $calculator->getInterestAmount(100, 10);
-        $this->assertEquals(10, $interest);
+        $calculator = new Exact($principal);
+        $interest = $calculator->getInterestAmount($principalBalance, $noOfDays);
+        $this->assertEquals($expectedInterest, $interest);
+    }
 
-        $calculator = new Exact(180);
-        $interest = $calculator->getInterestAmount(100, 29);
-        $this->assertEquals(14.5, $interest);
+    public function loanData()
+    {
+        return [
+            [360, 100, 10, 10],
+            [180, 100, 29, 14.5]
+        ];
     }
 
 }
