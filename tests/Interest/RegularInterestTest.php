@@ -3,7 +3,7 @@
 namespace Kauri\Loan;
 
 
-use Kauri\Loan\Calculator\Interest\Regular;
+use Kauri\Loan\FinancialCalculator\Interest\Regular;
 
 class RegularInterestTest extends \PHPUnit_Framework_TestCase
 {

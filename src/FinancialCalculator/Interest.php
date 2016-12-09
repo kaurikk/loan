@@ -1,11 +1,11 @@
 <?php
 
-namespace Kauri\Loan\Calculator;
+namespace Kauri\Loan\FinancialCalculator;
 
 
-use Kauri\Loan\Calculator;
+use Kauri\Loan\FinancialCalculator;
 
-abstract class Interest extends Calculator
+abstract class Interest extends FinancialCalculator
 {
     /**
      * @param $principal

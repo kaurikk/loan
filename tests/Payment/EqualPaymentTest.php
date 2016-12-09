@@ -2,7 +2,7 @@
 
 namespace Kauri\Loan;
 
-use Kauri\Loan\Calculator\Payment\Equal;
+use Kauri\Loan\FinancialCalculator\Payment\Equal;
 
 class EqualPaymentTest extends \PHPUnit_Framework_TestCase
 {

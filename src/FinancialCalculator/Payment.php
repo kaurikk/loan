@@ -1,11 +1,11 @@
 <?php
 
-namespace Kauri\Loan\Calculator;
+namespace Kauri\Loan\FinancialCalculator;
 
 
-use Kauri\Loan\Calculator;
+use Kauri\Loan\FinancialCalculator;
 
-abstract class Payment extends Calculator
+abstract class Payment extends FinancialCalculator
 {
     protected $amountOfPrincipal;
 

@@ -3,7 +3,7 @@
 namespace Kauri\Loan;
 
 
-abstract class Calculator
+abstract class FinancialCalculator
 {
     const PAYMENT_FREQUENCY_MONTHLY = 1;
     const PAYMENT_FREQUENCY_WEEKLY = 2;
@@ -16,7 +16,7 @@ abstract class Calculator
     protected $yearlyInterestRate;
 
     /**
-     * Calculator constructor.
+     * FinancialCalculator constructor.
      * @param $yearlyInterestRate
      */
     public function __construct($yearlyInterestRate)
@@ -24,6 +24,10 @@ abstract class Calculator
         $this->yearlyInterestRate = $yearlyInterestRate;
     }
 
+    /**
+     * @param int $paymentFrequency
+     * @return float
+     */
     protected function getPeriodicInterestRate($paymentFrequency = self::PAYMENT_FREQUENCY_MONTHLY)
     {
         switch ($paymentFrequency) {

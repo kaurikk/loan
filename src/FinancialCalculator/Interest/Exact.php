@@ -1,10 +1,16 @@
 <?php
 
-namespace Kauri\Loan\Calculator\Interest;
+namespace Kauri\Loan\FinancialCalculator\Interest;
 
 
-use Kauri\Loan\Calculator\Interest;
+use Kauri\Loan\FinancialCalculator\Interest;
 
+/**
+ * Class Exact
+ * @package Kauri\Loan\FinancialCalculator\Interest
+ *
+ * Calculates interest amount based on exact days in payment
+ */
 class Exact extends Interest
 {
     /**

@@ -3,16 +3,16 @@
 namespace Kauri\Loan;
 
 /**
- * Class Scheduler
+ * Class RepaymentDateCalculator
  */
-class Scheduler
+class RepaymentDateCalculator
 {
     /**
      * @var int
      */
     private $noOfPayments;
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $startDate;
     /**
@@ -58,7 +58,7 @@ class Scheduler
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -73,6 +73,9 @@ class Scheduler
         return $this->scheduleDates;
     }
 
+    /**
+     * @return int
+     */
     public function getNoOfPayments()
     {
         return $this->noOfPayments;

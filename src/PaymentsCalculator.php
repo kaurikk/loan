@@ -2,8 +2,8 @@
 
 namespace Kauri\Loan;
 
-use Kauri\Loan\Calculator\Interest\Regular;
-use Kauri\Loan\Calculator\Payment\Equal;
+use Kauri\Loan\FinancialCalculator\Interest\Regular;
+use Kauri\Loan\FinancialCalculator\Payment\Equal;
 
 class PaymentsCalculator
 {
@@ -12,25 +12,25 @@ class PaymentsCalculator
      */
     private $payments = array();
     /**
-     * @var null
+     * @var float
      */
     private $yearlyInterestRate = null;
     /**
-     * @var null
+     * @var float
      */
     private $amountOfPrincipal = null;
     /**
-     * @var null
+     * @var integer
      */
     private $numberOfPayments = null;
 
     /**
      * PaymentsCalculator constructor.
-     * @param Scheduler $scheduler
+     * @param RepaymentDateCalculator $scheduler
      * @param $amountOfPrincipal
      * @param $yearlyInterestRate
      */
-    public function __construct(Scheduler $scheduler, $amountOfPrincipal, $yearlyInterestRate)
+    public function __construct(RepaymentDateCalculator $scheduler, $amountOfPrincipal, $yearlyInterestRate)
     {
         $this->amountOfPrincipal = $amountOfPrincipal;
         $this->yearlyInterestRate = $yearlyInterestRate;

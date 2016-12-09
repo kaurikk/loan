@@ -1,9 +1,9 @@
 <?php
 
-namespace Kauri\Loan\Calculator\Payment;
+namespace Kauri\Loan\FinancialCalculator\Payment;
 
 
-use Kauri\Loan\Calculator\Payment;
+use Kauri\Loan\FinancialCalculator\Payment;
 
 class Equal extends Payment
 {

@@ -3,7 +3,7 @@
 namespace Kauri\Loan;
 
 
-use Kauri\Loan\Calculator\Interest\Exact;
+use Kauri\Loan\FinancialCalculator\Interest\Exact;
 
 class ExactInterestTest extends \PHPUnit_Framework_TestCase
 {
