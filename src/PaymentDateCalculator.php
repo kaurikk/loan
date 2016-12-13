@@ -16,6 +16,10 @@ class PaymentDateCalculator
      */
     private $startDate;
     /**
+     * @var \DateTime
+     */
+    private $endDate;
+    /**
      * @var array
      */
     private $scheduleDates;
@@ -51,6 +55,7 @@ class PaymentDateCalculator
         foreach ($period as $iteration => $date) {
             if ($date != $this->startDate) {
                 $schedule[$iteration] = $date;
+                $this->endDate = $date;
             }
         }
 
@@ -63,6 +68,11 @@ class PaymentDateCalculator
     public function getStartDate()
     {
         return $this->startDate;
+    }
+
+    public function getEndDate()
+    {
+        return $this->endDate;
     }
 
     /**

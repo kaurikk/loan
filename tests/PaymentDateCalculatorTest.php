@@ -17,6 +17,8 @@ class PaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
     public function testGenerateSchedule($noOfPayments, \DateTime $startDate, $dateIntervalPattern, array $dates)
     {
         $scheduler = new PaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
+        $this->assertEquals($startDate->format('Y-m-d'), $scheduler->getStartDate()->format('Y-m-d'));
+
         /**
          * @var int $k
          * @var \DateTime $item
@@ -24,6 +26,8 @@ class PaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
         foreach ($scheduler->getSchedule() as $k => $item) {
             $this->assertEquals($item->format('Y-m-d'), $dates[$k]);
         }
+
+        $this->assertEquals(end($dates), $scheduler->getEndDate()->format('Y-m-d'));
     }
 
     public function datesProvider()

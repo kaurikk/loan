@@ -28,7 +28,7 @@ class PaymentsCalculator
      * @param PaymentAmountCalculatorInterface $paymentAmountCalculator
      * @param InterestAmountCalculatorInterface $interestAmountCalculator
      * @param $amountOfPrincipal
-     * @param $yearlyInterestRate
+     * @param $yearlyInterestRate interest rate for 360 days
      */
     public function __construct(
         PaymentDateCalculator $scheduler,
@@ -50,11 +50,19 @@ class PaymentsCalculator
             $diff = $this->calculatePeriodLength($periodStart, $periodEnd);
 
 
-            $currentPeriod = 30;
+            /**
+             * Ways to calculate: 12 payments, 360%
+             * 1:
+             */
+
+            //$currentPeriod = $diff; // exact:29 or 31
+            $currentPeriod = 30; // average: 30
             $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
 
-            $totalPeriod = $this->numberOfPayments * 30;
+            //$totalPeriod = $this->calculatePeriodLength($scheduler->getStartDate(), $scheduler->getEndDate()); // exact: 364
+            $totalPeriod = $this->numberOfPayments * 30; // average: 30*
             $numberOfPeriods = $totalPeriod / $currentPeriod;
+
             /**
              * Calculate payment amount
              */
@@ -136,7 +144,7 @@ class PaymentsCalculator
 
     private function calculatePeriodLength($periodStart, $periodEnd)
     {
-        $diff = (int)$periodEnd->diff($periodStart)->format('%d') + 1;
+        $diff = (int) $periodEnd->diff($periodStart)->format('%d') + 1;
         return $diff;
     }
 
