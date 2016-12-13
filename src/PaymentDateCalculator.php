@@ -5,7 +5,7 @@ namespace Kauri\Loan;
 /**
  * Class RepaymentDateCalculator
  */
-class RepaymentDateCalculator
+class PaymentDateCalculator
 {
     /**
      * @var int

@@ -3,9 +3,9 @@
 namespace Kauri\Loan\Test;
 
 
-use Kauri\Loan\RepaymentDateCalculator;
+use Kauri\Loan\PaymentDateCalculator;
 
-class RepaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
+class PaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider datesProvider
@@ -16,7 +16,7 @@ class RepaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateSchedule($noOfPayments, \DateTime $startDate, $dateIntervalPattern, array $dates)
     {
-        $scheduler = new RepaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
+        $scheduler = new PaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
         /**
          * @var int $k
          * @var \DateTime $item

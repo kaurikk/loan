@@ -2,8 +2,6 @@
 
 namespace Kauri\Loan;
 
-use Kauri\Loan\FinancialCalculator\Interest\Regular;
-use Kauri\Loan\FinancialCalculator\Payment\Equal;
 
 class PaymentsCalculator
 {
@@ -26,12 +24,19 @@ class PaymentsCalculator
 
     /**
      * PaymentsCalculator constructor.
-     * @param RepaymentDateCalculator $scheduler
+     * @param PaymentDateCalculator $scheduler
+     * @param PaymentAmountCalculatorInterface $paymentAmountCalculator
+     * @param InterestAmountCalculatorInterface $interestAmountCalculator
      * @param $amountOfPrincipal
      * @param $yearlyInterestRate
      */
-    public function __construct(RepaymentDateCalculator $scheduler, $amountOfPrincipal, $yearlyInterestRate)
-    {
+    public function __construct(
+        PaymentDateCalculator $scheduler,
+        PaymentAmountCalculatorInterface $paymentAmountCalculator,
+        InterestAmountCalculatorInterface $interestAmountCalculator,
+        $amountOfPrincipal,
+        $yearlyInterestRate
+    ) {
         $this->amountOfPrincipal = $amountOfPrincipal;
         $this->yearlyInterestRate = $yearlyInterestRate;
         $this->numberOfPayments = $scheduler->getNoOfPayments();
@@ -44,18 +49,22 @@ class PaymentsCalculator
             $periodEnd = $this->calculatePeriodEnd($paymentDate);
             $diff = $this->calculatePeriodLength($periodStart, $periodEnd);
 
+
+            $currentPeriod = 30;
+            $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
+
+            $totalPeriod = $this->numberOfPayments * 30;
+            $numberOfPeriods = $totalPeriod / $currentPeriod;
             /**
              * Calculate payment amount
              */
-            $paymentCalculator = new Equal($this->amountOfPrincipal, $this->numberOfPayments,
-                $this->yearlyInterestRate);
-            $paymentAmount = round($paymentCalculator->getPaymentAmount(), 2);
+            $paymentAmount = $paymentAmountCalculator->getPaymentAmount($this->amountOfPrincipal, $ratePerPeriod,
+                $numberOfPeriods);
 
             /**
              * Calculate interest part
              */
-            $interestCalculator = new Regular($this->yearlyInterestRate);
-            $interest = round($interestCalculator->getInterestAmount($principalLeft), 2);
+            $interest = $interestAmountCalculator->getInterestAmount($principalLeft, $ratePerPeriod);
 
             /**
              * Calculate principal part
@@ -127,7 +136,7 @@ class PaymentsCalculator
 
     private function calculatePeriodLength($periodStart, $periodEnd)
     {
-        $diff = (int) $periodEnd->diff($periodStart)->format('%d') + 1;
+        $diff = (int)$periodEnd->diff($periodStart)->format('%d') + 1;
         return $diff;
     }
 

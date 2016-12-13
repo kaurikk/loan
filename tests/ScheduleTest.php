@@ -3,24 +3,38 @@
 namespace Kauri\Loan\Test;
 
 
+use Kauri\Loan\InterestAmountCalculator;
+use Kauri\Loan\PaymentAmountCalculator;
 use Kauri\Loan\PaymentsCalculator;
-use Kauri\Loan\RepaymentDateCalculator;
+use Kauri\Loan\PaymentDateCalculator;
 
 class ScheduleTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function testScheduler()
+    /**
+     * @dataProvider loanData
+     * @param $noOfPayments
+     * @param $principal
+     * @param $interestRate
+     * @param $expectedPaymentAmount
+     */
+    public function testScheduler($noOfPayments, $principal, $interestRate, $expectedPaymentAmount)
     {
-        $scheduler = new RepaymentDateCalculator(2, new \DateTime(), 'P3D');
-        $paymentsCalculator = new PaymentsCalculator($scheduler, 2500, 0);
-        $payments = $paymentsCalculator->getPayments();
-        $firstPayment = current($payments);
-        $this->assertEquals(1250, $firstPayment['payment']);
+        $paymentAmountCalculator = new PaymentAmountCalculator;
+        $interestAmountCalculator = new InterestAmountCalculator;
 
-        $scheduler = new RepaymentDateCalculator(1, new \DateTime(), 'P3D');
-        $paymentsCalculator = new PaymentsCalculator($scheduler, 1000, 360);
+        $scheduler = new PaymentDateCalculator($noOfPayments, new \DateTime(), 'P3D');
+        $paymentsCalculator = new PaymentsCalculator($scheduler, $paymentAmountCalculator, $interestAmountCalculator,
+            $principal, $interestRate);
         $payments = $paymentsCalculator->getPayments();
         $firstPayment = current($payments);
-        $this->assertEquals(1300, $firstPayment['payment']);
+        $this->assertEquals($expectedPaymentAmount, $firstPayment['payment']);
+    }
+
+    public function loanData()
+    {
+        return [
+            [2, 2500, 0, 1250],
+            [1, 1000, 360, 1300]
+        ];
     }
 }
