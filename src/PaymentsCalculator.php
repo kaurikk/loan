@@ -50,10 +50,7 @@ class PaymentsCalculator
             $diff = $this->calculatePeriodLength($periodStart, $periodEnd);
 
 
-            /**
-             * Ways to calculate: 12 payments, 360%
-             * 1:
-             */
+
 
             //$currentPeriod = $diff; // exact:29 or 31
             $currentPeriod = 30; // average: 30
