@@ -5,20 +5,36 @@ namespace Kauri\Loan;
 
 class PeriodCalculator implements PeriodCalculatorInterface
 {
-    const TYPE_CALCULATION_ANNUITY = 1;
-    const TYPE_CALCULATION_EXACT = 2;
+    /**
+     * Exact payment with exact interest
+     */
+    const CALCULATION_TYPE_EXACT = 1;
+    /**
+     * Annuity payment with exact interest
+     */
+    const CALCULATION_TYPE_EXACT_INTEREST = 2;
+    /**
+     * Annuity payment with annuity interest
+     */
+    const CALCULATION_TYPE_ANNUITY = 3;
 
     private $periods = array();
 
+    private $avgTotalPeriod = null;
     private $exactTotalPeriod = null;
 
     private $avgCurrentPeriod = null;
-    private $avgTotalPeriod = null;
 
+
+    /**
+     * PeriodCalculator constructor.
+     * @param PaymentDateCalculator $paymentDateCalculator
+     */
     public function __construct(PaymentDateCalculator $paymentDateCalculator)
     {
-        $periodStart = clone $paymentDateCalculator->getStartDate();
+        $this->avgCurrentPeriod = $paymentDateCalculator->getAvgIntervalLength();
 
+        $periodStart = clone $paymentDateCalculator->getStartDate();
         foreach ($paymentDateCalculator->getSchedule() as $paymentNo => $paymentDate) {
             $periodStart = $this->calculatePeriodStart($periodStart);
             $periodEnd = $this->calculatePeriodEnd($paymentDate);
@@ -30,48 +46,53 @@ class PeriodCalculator implements PeriodCalculatorInterface
             $this->exactTotalPeriod += $length;
         }
 
-        /**
-         * Set average current period based on frequency logic: 30 for monthly, 7 for weekly etc
-         * @todo Add support for frequency logic?
-         */
-        $this->avgCurrentPeriod = null;
         $this->avgTotalPeriod = $this->avgCurrentPeriod * count($this->periods);
-
-
-        /**
-         * Exact payment with exact interest
-         * Annuity payment with exact interest
-         * Annuity payment with annuity interest
-         */
-
-
-        //$currentPeriod = 30; // average: 30
-        //$ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
-
-        //$totalPeriod = $this->calculatePeriodLength($scheduler->getStartDate(), $scheduler->getEndDate()); // exact: 364
-        //$totalPeriod = $this->numberOfPayments * 30; // average: 30*
-
     }
 
-    public function getRatePerPeriod($yearlyInterestRate)
-    {
-        $currentPeriod = 30; // average: 30
+    /**
+     * @param Period $period
+     * @param $yearlyInterestRate
+     * @param int $calculationType
+     * @return float|int
+     */
+    public function getRatePerPeriod(
+        Period $period,
+        $yearlyInterestRate,
+        $calculationType = self::CALCULATION_TYPE_ANNUITY
+    ) {
+        switch ($calculationType) {
+            case self::CALCULATION_TYPE_EXACT:
+            case self::CALCULATION_TYPE_EXACT_INTEREST:
+                $currentPeriod = $period->getLength();
+                break;
+            case self::CALCULATION_TYPE_ANNUITY:
+                $currentPeriod = $this->avgCurrentPeriod;
+                break;
+        }
+
         $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
 
         return $ratePerPeriod;
     }
 
     /**
-     * If this is exact then also RatePerPeriod must be exact
-     * Is used to calculate payment amount
+     * @param Period $period
+     * @param int $calculationType
      * @return float|int
      */
-    public function getNumberOfPeriods()
+    public function getNumberOfPeriods(Period $period, $calculationType = self::CALCULATION_TYPE_ANNUITY)
     {
-        //$totalPeriod = $this->calculatePeriodLength($scheduler->getStartDate(), $scheduler->getEndDate()); // exact: 364
-
-        $currentPeriod = 30; // average: 30
-        $totalPeriods = $this->numberOfPayments * 30; // average: 30
+        switch ($calculationType) {
+            case self::CALCULATION_TYPE_EXACT:
+                $currentPeriod = $period->getLength();
+                $totalPeriods = $this->exactTotalPeriod;
+                break;
+            case self::CALCULATION_TYPE_EXACT_INTEREST:
+            case self::CALCULATION_TYPE_ANNUITY:
+                $currentPeriod = $this->avgCurrentPeriod;
+                $totalPeriods = $this->avgTotalPeriod;
+                break;
+        }
 
         $numberOfPeriods = $totalPeriods / $currentPeriod;
 
@@ -110,4 +131,11 @@ class PeriodCalculator implements PeriodCalculatorInterface
         return $periodEnd;
     }
 
+    /**
+     * @return array
+     */
+    public function getPeriods()
+    {
+        return $this->periods;
+    }
 }

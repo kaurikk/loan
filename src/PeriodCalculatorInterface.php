@@ -7,7 +7,7 @@ interface PeriodCalculatorInterface
 {
     public function __construct(PaymentDateCalculator $paymentDateCalculator);
 
-    public function getRatePerPeriod($yearlyInterestRate);
+    public function getRatePerPeriod(Period $period, $yearlyInterestRate);
 
-    public function getNumberOfPeriods();
+    public function getNumberOfPeriods(Period $period);
 }

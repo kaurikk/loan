@@ -21,4 +21,9 @@ class Period
         return $this->length;
     }
 
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
 }

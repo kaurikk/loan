@@ -12,6 +12,10 @@ class PaymentDateCalculator
      */
     private $noOfPayments;
     /**
+     * @var int
+     */
+    private $avgIntervalLength;
+    /**
      * @var \DateTime
      */
     private $startDate;
@@ -49,7 +53,10 @@ class PaymentDateCalculator
     private function generateSchedule()
     {
         $schedule = array();
+
         $dateInterval = new \DateInterval($this->dateIntervalPattern);
+        $this->avgIntervalLength = $this->getIntervalLength($dateInterval);
+
         $period = new \DatePeriod($this->startDate, $dateInterval, $this->noOfPayments);
 
         foreach ($period as $iteration => $date) {
@@ -63,6 +70,27 @@ class PaymentDateCalculator
     }
 
     /**
+     * @param \DateInterval $dateInterval
+     * @return null|string
+     */
+    private function getIntervalLength(\DateInterval $dateInterval)
+    {
+        $intervalLength = 0;
+
+        if ($dateInterval->format('%d') > 0) {
+            $intervalLength = $intervalLength + $dateInterval->format('%d');
+        }
+        if ($dateInterval->format('%m') > 0) {
+            $intervalLength = $intervalLength + $dateInterval->format('%m') * 30;
+        }
+        if ($dateInterval->format('%y') > 0) {
+            $intervalLength = $intervalLength + $dateInterval->format('%y') * 30 * 12;
+        }
+
+        return $intervalLength;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getStartDate()
@@ -70,6 +98,9 @@ class PaymentDateCalculator
         return $this->startDate;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getEndDate()
     {
         return $this->endDate;
@@ -89,6 +120,14 @@ class PaymentDateCalculator
     public function getNoOfPayments()
     {
         return $this->noOfPayments;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAvgIntervalLength()
+    {
+        return $this->avgIntervalLength;
     }
 
 }

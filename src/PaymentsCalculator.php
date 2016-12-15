@@ -50,13 +50,9 @@ class PaymentsCalculator
             $diff = $this->calculatePeriodLength($periodStart, $periodEnd);
 
 
-
-
-            //$currentPeriod = $diff; // exact:29 or 31
             $currentPeriod = 30; // average: 30
             $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
 
-            //$totalPeriod = $this->calculatePeriodLength($scheduler->getStartDate(), $scheduler->getEndDate()); // exact: 364
             $totalPeriod = $this->numberOfPayments * 30; // average: 30*
             $numberOfPeriods = $totalPeriod / $currentPeriod;
 
