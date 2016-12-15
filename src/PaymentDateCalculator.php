@@ -5,14 +5,14 @@ namespace Kauri\Loan;
 /**
  * Class RepaymentDateCalculator
  */
-class PaymentDateCalculator
+class PaymentDateCalculator implements PaymentDateCalculatorInterface
 {
     /**
      * @var int
      */
     private $noOfPayments;
     /**
-     * @var int
+     * @var double
      */
     private $avgIntervalLength;
     /**
@@ -55,7 +55,7 @@ class PaymentDateCalculator
         $schedule = array();
 
         $dateInterval = new \DateInterval($this->dateIntervalPattern);
-        $this->avgIntervalLength = $this->getIntervalLength($dateInterval);
+        $this->avgIntervalLength = $this->extractIntervalLength($dateInterval);
 
         $period = new \DatePeriod($this->startDate, $dateInterval, $this->noOfPayments);
 
@@ -71,9 +71,9 @@ class PaymentDateCalculator
 
     /**
      * @param \DateInterval $dateInterval
-     * @return null|string
+     * @return float
      */
-    private function getIntervalLength(\DateInterval $dateInterval)
+    private function extractIntervalLength(\DateInterval $dateInterval)
     {
         $intervalLength = 0;
 
@@ -117,13 +117,13 @@ class PaymentDateCalculator
     /**
      * @return int
      */
-    public function getNoOfPayments()
+    public function ggetNoOfPayments()
     {
         return $this->noOfPayments;
     }
 
     /**
-     * @return int
+     * @return double
      */
     public function getAvgIntervalLength()
     {

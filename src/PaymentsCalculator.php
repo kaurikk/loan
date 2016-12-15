@@ -3,63 +3,43 @@
 namespace Kauri\Loan;
 
 
-class PaymentsCalculator
+class PaymentsCalculator implements PaymentsCalculatorInterface
 {
     /**
      * @var array
      */
     private $payments = array();
-    /**
-     * @var float
-     */
-    private $yearlyInterestRate = null;
-    /**
-     * @var float
-     */
-    private $amountOfPrincipal = null;
-    /**
-     * @var integer
-     */
-    private $numberOfPayments = null;
 
     /**
      * PaymentsCalculator constructor.
-     * @param PaymentDateCalculator $scheduler
+     * @param PeriodCalculatorInterface $periodCalculator
      * @param PaymentAmountCalculatorInterface $paymentAmountCalculator
      * @param InterestAmountCalculatorInterface $interestAmountCalculator
-     * @param $amountOfPrincipal
-     * @param $yearlyInterestRate interest rate for 360 days
+     * @param float $amountOfPrincipal
+     * @param float $yearlyInterestRate interest rate for 360 days
      */
     public function __construct(
-        PaymentDateCalculator $scheduler,
+        PeriodCalculatorInterface $periodCalculator,
         PaymentAmountCalculatorInterface $paymentAmountCalculator,
         InterestAmountCalculatorInterface $interestAmountCalculator,
         $amountOfPrincipal,
         $yearlyInterestRate
     ) {
-        $this->amountOfPrincipal = $amountOfPrincipal;
-        $this->yearlyInterestRate = $yearlyInterestRate;
-        $this->numberOfPayments = $scheduler->getNoOfPayments();
+        $periods = $periodCalculator->getPeriods();
+        $numberOfPayments = count($periods);
 
-        $periodStart = clone $scheduler->getStartDate();
-        $principalLeft = $this->amountOfPrincipal;
+        $principalLeft = $amountOfPrincipal;
 
-        foreach ($scheduler->getSchedule() as $key => $paymentDate) {
-            $periodStart = $this->calculatePeriodStart($periodStart);
-            $periodEnd = $this->calculatePeriodEnd($paymentDate);
-            $diff = $this->calculatePeriodLength($periodStart, $periodEnd);
+        foreach ($periods as $key => $period) {
+            $calculationType = $periodCalculator::CALCULATION_TYPE_ANNUITY;
 
-
-            $currentPeriod = 30; // average: 30
-            $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
-
-            $totalPeriod = $this->numberOfPayments * 30; // average: 30*
-            $numberOfPeriods = $totalPeriod / $currentPeriod;
+            $ratePerPeriod = $periodCalculator->getRatePerPeriod($period, $yearlyInterestRate, $calculationType);
+            $numberOfPeriods = $periodCalculator->getNumberOfPeriods($period, $calculationType);
 
             /**
              * Calculate payment amount
              */
-            $paymentAmount = $paymentAmountCalculator->getPaymentAmount($this->amountOfPrincipal, $ratePerPeriod,
+            $paymentAmount = $paymentAmountCalculator->getPaymentAmount($amountOfPrincipal, $ratePerPeriod,
                 $numberOfPeriods);
 
             /**
@@ -70,7 +50,7 @@ class PaymentsCalculator
             /**
              * Calculate principal part
              */
-            if ($key < $this->numberOfPayments) {
+            if ($key < $numberOfPayments) {
                 $principal = $paymentAmount - $interest;
             } else {
                 $principal = $principalLeft;
@@ -89,16 +69,10 @@ class PaymentsCalculator
                 'principal' => $principal,
                 'interest' => $interest,
                 'principal_left' => $principalLeft,
-                'period_length' => $diff,
-                'period' => array(
-                    'start' => $periodStart,
-                    'end' => $periodEnd
-                )
+                'period' => $period
             );
 
             $this->payments[$key] = $paymentData;
-
-            $periodStart = clone $paymentDate;
         }
     }
 
@@ -109,36 +83,4 @@ class PaymentsCalculator
     {
         return $this->payments;
     }
-
-    /**
-     * @param $periodStart
-     * @return mixed
-     */
-    private function calculatePeriodStart($periodStart)
-    {
-        $periodStart = clone $periodStart;
-        // Move to next day
-        $periodStart->add(new \DateInterval('P1D'));
-
-        return $periodStart;
-    }
-
-    /**
-     * @param $paymentDate
-     * @return mixed
-     */
-    private function calculatePeriodEnd($paymentDate)
-    {
-        $periodEnd = clone $paymentDate;
-        // Move to the end of the day
-        $periodEnd->add(new \DateInterval('P1D'))->sub(new \DateInterval('PT1S'));
-        return $periodEnd;
-    }
-
-    private function calculatePeriodLength($periodStart, $periodEnd)
-    {
-        $diff = (int) $periodEnd->diff($periodStart)->format('%d') + 1;
-        return $diff;
-    }
-
 }

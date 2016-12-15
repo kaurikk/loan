@@ -1,5 +1,16 @@
 # loan
 
+## Separate systems
+  * Payment date calculation - based on frequency and other rules finds payment dates
+    * actual payment date
+  * Payment period calculation - based on payment dates (and issue date) periods are found for payments
+    * period start
+    * period end
+    * period length
+  * Payment amount calculation
+  * Interest amount calculation
+  * Payment calculator
+
 ## Initial loan schedule calculation
   * Payment dates calculation
     * Specific day (date) of month

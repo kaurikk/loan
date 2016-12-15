@@ -5,9 +5,9 @@ namespace Kauri\Loan;
 
 interface PeriodCalculatorInterface
 {
-    public function __construct(PaymentDateCalculator $paymentDateCalculator);
+    public function __construct(PaymentDateCalculatorInterface $paymentDateCalculator);
 
-    public function getRatePerPeriod(Period $period, $yearlyInterestRate);
+    public function getRatePerPeriod(PeriodInterface $period, $yearlyInterestRate);
 
-    public function getNumberOfPeriods(Period $period);
+    public function getNumberOfPeriods(PeriodInterface $period);
 }

@@ -28,9 +28,9 @@ class PeriodCalculator implements PeriodCalculatorInterface
 
     /**
      * PeriodCalculator constructor.
-     * @param PaymentDateCalculator $paymentDateCalculator
+     * @param PaymentDateCalculatorInterface $paymentDateCalculator
      */
-    public function __construct(PaymentDateCalculator $paymentDateCalculator)
+    public function __construct(PaymentDateCalculatorInterface $paymentDateCalculator)
     {
         $this->avgCurrentPeriod = $paymentDateCalculator->getAvgIntervalLength();
 
@@ -50,13 +50,14 @@ class PeriodCalculator implements PeriodCalculatorInterface
     }
 
     /**
-     * @param Period $period
+     * @param PeriodInterface $period
      * @param $yearlyInterestRate
      * @param int $calculationType
      * @return float|int
+     * @throws \Exception
      */
     public function getRatePerPeriod(
-        Period $period,
+        PeriodInterface $period,
         $yearlyInterestRate,
         $calculationType = self::CALCULATION_TYPE_ANNUITY
     ) {
@@ -68,6 +69,8 @@ class PeriodCalculator implements PeriodCalculatorInterface
             case self::CALCULATION_TYPE_ANNUITY:
                 $currentPeriod = $this->avgCurrentPeriod;
                 break;
+            default:
+                throw new \Exception('Calculation type not implemented');
         }
 
         $ratePerPeriod = $yearlyInterestRate / 360 * $currentPeriod;
@@ -76,11 +79,12 @@ class PeriodCalculator implements PeriodCalculatorInterface
     }
 
     /**
-     * @param Period $period
+     * @param PeriodInterface $period
      * @param int $calculationType
      * @return float|int
+     * @throws \Exception
      */
-    public function getNumberOfPeriods(Period $period, $calculationType = self::CALCULATION_TYPE_ANNUITY)
+    public function getNumberOfPeriods(PeriodInterface $period, $calculationType = self::CALCULATION_TYPE_ANNUITY)
     {
         switch ($calculationType) {
             case self::CALCULATION_TYPE_EXACT:
@@ -92,6 +96,8 @@ class PeriodCalculator implements PeriodCalculatorInterface
                 $currentPeriod = $this->avgCurrentPeriod;
                 $totalPeriods = $this->avgTotalPeriod;
                 break;
+            default:
+                throw new \Exception('Calculation type not implemented');
         }
 
         $numberOfPeriods = $totalPeriods / $currentPeriod;

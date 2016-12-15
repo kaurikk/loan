@@ -7,8 +7,9 @@ use Kauri\Loan\InterestAmountCalculator;
 use Kauri\Loan\PaymentAmountCalculator;
 use Kauri\Loan\PaymentsCalculator;
 use Kauri\Loan\PaymentDateCalculator;
+use Kauri\Loan\PeriodCalculator;
 
-class ScheduleTest extends \PHPUnit_Framework_TestCase
+class PaymentsCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider loanData
@@ -23,8 +24,12 @@ class ScheduleTest extends \PHPUnit_Framework_TestCase
         $interestAmountCalculator = new InterestAmountCalculator;
 
         $scheduler = new PaymentDateCalculator($noOfPayments, new \DateTime(), 'P3D');
-        $paymentsCalculator = new PaymentsCalculator($scheduler, $paymentAmountCalculator, $interestAmountCalculator,
+        $periodCalculator = new PeriodCalculator($scheduler);
+
+        $paymentsCalculator = new PaymentsCalculator($periodCalculator, $paymentAmountCalculator,
+            $interestAmountCalculator,
             $principal, $interestRate);
+
         $payments = $paymentsCalculator->getPayments();
         $firstPayment = current($payments);
         $this->assertEquals($expectedPaymentAmount, $firstPayment['payment']);
@@ -34,7 +39,7 @@ class ScheduleTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [2, 2500, 0, 1250],
-            [1, 1000, 360, 1300]
+            [1, 1000, 360, 1030]
         ];
     }
 }

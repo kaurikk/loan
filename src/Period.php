@@ -3,7 +3,7 @@
 namespace Kauri\Loan;
 
 
-class Period
+class Period implements PeriodInterface
 {
     private $start;
     private $end;
