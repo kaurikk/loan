@@ -12,7 +12,7 @@ class PaymentDateCalculator implements PaymentDateCalculatorInterface
      */
     private $noOfPayments;
     /**
-     * @var double
+     * @var float|int
      */
     private $avgIntervalLength;
     /**
@@ -71,7 +71,7 @@ class PaymentDateCalculator implements PaymentDateCalculatorInterface
 
     /**
      * @param \DateInterval $dateInterval
-     * @return float
+     * @return float|int
      */
     private function extractIntervalLength(\DateInterval $dateInterval)
     {
@@ -123,7 +123,7 @@ class PaymentDateCalculator implements PaymentDateCalculatorInterface
     }
 
     /**
-     * @return double
+     * @return float|int
      */
     public function getAvgIntervalLength()
     {

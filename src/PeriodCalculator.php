@@ -105,7 +105,11 @@ class PeriodCalculator implements PeriodCalculatorInterface
         return $numberOfPeriods;
     }
 
-
+    /**
+     * @param $periodStart
+     * @param $periodEnd
+     * @return int
+     */
     private function calculatePeriodLength($periodStart, $periodEnd)
     {
         $diff = (int) $periodEnd->diff($periodStart)->days + 1;

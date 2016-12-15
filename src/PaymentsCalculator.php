@@ -29,10 +29,9 @@ class PaymentsCalculator implements PaymentsCalculatorInterface
         $numberOfPayments = count($periods);
 
         $principalLeft = $amountOfPrincipal;
+        $calculationType = $periodCalculator::CALCULATION_TYPE_ANNUITY;
 
         foreach ($periods as $key => $period) {
-            $calculationType = $periodCalculator::CALCULATION_TYPE_ANNUITY;
-
             $ratePerPeriod = $periodCalculator->getRatePerPeriod($period, $yearlyInterestRate, $calculationType);
             $numberOfPeriods = $periodCalculator->getNumberOfPeriods($period, $calculationType);
 
