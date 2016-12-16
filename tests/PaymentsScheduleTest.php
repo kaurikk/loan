@@ -3,7 +3,6 @@
 namespace Kauri\Loan\Test;
 
 
-use Kauri\Loan\PaymentDateCalculator;
 use Kauri\Loan\PaymentScheduleConfig;
 use Kauri\Loan\PaymentSchedule;
 use Kauri\Loan\PaymentScheduleFactory;
@@ -38,8 +37,7 @@ class PaymentsScheduleTest extends \PHPUnit_Framework_TestCase
 
         $schedule = PaymentScheduleFactory::generate($config);
 
-
-        //print_r($schedule);
+        $this->assertEquals($schedule->getNoOfPayments(), 3);
     }
 
     public function datesProvider()

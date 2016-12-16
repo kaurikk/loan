@@ -45,16 +45,16 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
         $intervalLength = 0;
 
         if ($dateInterval->format('%d') > 0) {
-            $intervalLength = $intervalLength + $dateInterval->format('%d');
+            $intervalLength = $intervalLength + (int) $dateInterval->format('%d');
         }
         if ($dateInterval->format('%m') > 0) {
-            $intervalLength = $intervalLength + $dateInterval->format('%m') * 30;
+            $intervalLength = $intervalLength + (int) $dateInterval->format('%m') * 30;
         }
         if ($dateInterval->format('%y') > 0) {
-            $intervalLength = $intervalLength + $dateInterval->format('%y') * 30 * 12;
+            $intervalLength = $intervalLength + (int) $dateInterval->format('%y') * 30 * 12;
         }
 
-        return $intervalLength;
+        return (int) $intervalLength;
     }
 
     /**

@@ -41,9 +41,6 @@ class PaymentsCalculatorTest extends \PHPUnit_Framework_TestCase
         $payments = $paymentsCalculator->getPayments();
         $firstPayment = current($payments);
         $this->assertEquals($expectedPaymentAmount, $firstPayment['payment']);
-
-
-        print_r($payments);
     }
 
     public function loanData()
