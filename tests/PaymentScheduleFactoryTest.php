@@ -4,8 +4,10 @@ namespace Kauri\Loan\Test;
 
 
 use Kauri\Loan\PaymentDateCalculator;
+use Kauri\Loan\PaymentScheduleConfig;
+use Kauri\Loan\PaymentScheduleFactory;
 
-class PaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
+class PaymentScheduleFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider datesProvider
@@ -16,18 +18,19 @@ class PaymentDateCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateSchedule($noOfPayments, \DateTime $startDate, $dateIntervalPattern, array $dates)
     {
-        $scheduler = new PaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
-        $this->assertEquals($startDate->format('Y-m-d'), $scheduler->getStartDate()->format('Y-m-d'));
+        $config = new PaymentScheduleConfig($noOfPayments, $startDate, $dateIntervalPattern);
+
+        $schedule = PaymentScheduleFactory::generate($config);
 
         /**
          * @var int $k
          * @var \DateTime $item
          */
-        foreach ($scheduler->getSchedule() as $k => $item) {
+        foreach ($schedule->getPaymentDates() as $k => $item) {
             $this->assertEquals($item->format('Y-m-d'), $dates[$k]);
         }
 
-        $this->assertEquals(end($dates), $scheduler->getEndDate()->format('Y-m-d'));
+        $this->assertEquals(end($dates), $item->format('Y-m-d'));
     }
 
     public function datesProvider()

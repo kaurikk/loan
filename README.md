@@ -2,7 +2,8 @@
 
 ## Separate systems
   * Payment date calculation - based on frequency and other rules finds payment dates
-    * actual payment date
+    * Payment Dates (collection)
+        * actual payment date
   * Payment period calculation - based on payment dates (and issue date) periods are found for payments
     * period start
     * period end

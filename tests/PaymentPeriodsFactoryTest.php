@@ -4,10 +4,13 @@ namespace Kauri\Loan\Test;
 
 
 use Kauri\Loan\PaymentDateCalculator;
+use Kauri\Loan\PaymentPeriodsFactory;
+use Kauri\Loan\PaymentScheduleConfig;
+use Kauri\Loan\PaymentScheduleFactory;
 use Kauri\Loan\PeriodCalculator;
 
 
-class PeriodCalculatorTest extends \PHPUnit_Framework_TestCase
+class PaymentPeriodsFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider datesProvider
@@ -26,17 +29,16 @@ class PeriodCalculatorTest extends \PHPUnit_Framework_TestCase
         array $periodLength,
         array $numPeriods
     ) {
-        $scheduler = new PaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
-        $periodCalculator = new PeriodCalculator($scheduler);
-
-        $periods = $periodCalculator->getPeriods();
+        $config = new PaymentScheduleConfig($noOfPayments, $startDate, $dateIntervalPattern);
+        $schedule = PaymentScheduleFactory::generate($config);
+        $periods = PaymentPeriodsFactory::generate($schedule);
 
         foreach ($periods as $no => $period) {
             $this->assertEquals($period->getEnd()->format('Y-m-d'), $dates[$no]);
             $this->assertEquals($period->getLength(), $periodLength[$no]);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_EXACT), $numPeriods[$no]);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_EXACT_INTEREST), $noOfPayments);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_ANNUITY), $noOfPayments);
+            $this->assertEquals($periods->getNumberOfPeriods($period, $periods::CALCULATION_TYPE_EXACT), $numPeriods[$no]);
+            $this->assertEquals($periods->getNumberOfPeriods($period, $periods::CALCULATION_TYPE_EXACT_INTEREST), $noOfPayments);
+            $this->assertEquals($periods->getNumberOfPeriods($period, $periods::CALCULATION_TYPE_ANNUITY), $noOfPayments);
         }
     }
 
