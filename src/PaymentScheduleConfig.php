@@ -89,12 +89,4 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     {
         return $this->dateInterval;
     }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getFirstPaymentDate()
-    {
-        return $this->firstPaymentDate;
-    }
 }
