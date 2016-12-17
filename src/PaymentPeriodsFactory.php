@@ -18,26 +18,14 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
         foreach ($paymentSchedule->getPaymentDates() as $paymentNo => $paymentDate) {
             $periodStart = self::calculatePeriodStart($periodStart);
             $periodEnd = self::calculatePeriodEnd($paymentDate);
-            $length = self::calculatePeriodLength($periodStart, $periodEnd);
 
-            $period = new Period($periodStart, $periodEnd, $length);
+            $period = new Period($periodStart, $periodEnd);
             $periods->add($period, $paymentNo);
 
             $periodStart = clone $paymentDate;
         }
 
         return $periods;
-    }
-
-    /**
-     * @param $periodStart
-     * @param $periodEnd
-     * @return int
-     */
-    private static function calculatePeriodLength($periodStart, $periodEnd)
-    {
-        $diff = (int) $periodEnd->diff($periodStart)->days + 1;
-        return $diff;
     }
 
     /**
