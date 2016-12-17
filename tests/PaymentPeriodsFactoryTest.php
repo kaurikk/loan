@@ -3,11 +3,12 @@
 namespace Kauri\Loan\Test;
 
 
-use Kauri\Loan\PaymentDateCalculator;
-use Kauri\Loan\PeriodCalculator;
+use Kauri\Loan\PaymentPeriodsFactory;
+use Kauri\Loan\PaymentScheduleConfig;
+use Kauri\Loan\PaymentScheduleFactory;
 
 
-class PeriodCalculatorTest extends \PHPUnit_Framework_TestCase
+class PaymentPeriodsFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider datesProvider
@@ -26,17 +27,16 @@ class PeriodCalculatorTest extends \PHPUnit_Framework_TestCase
         array $periodLength,
         array $numPeriods
     ) {
-        $scheduler = new PaymentDateCalculator($noOfPayments, $startDate, $dateIntervalPattern);
-        $periodCalculator = new PeriodCalculator($scheduler);
+        $config = new PaymentScheduleConfig($noOfPayments, $startDate, $dateIntervalPattern);
+        $schedule = PaymentScheduleFactory::generate($config);
+        $paymentPeriods = PaymentPeriodsFactory::generate($schedule);
 
-        $periods = $periodCalculator->getPeriods();
-
-        foreach ($periods as $no => $period) {
+        foreach ($paymentPeriods->getPeriods() as $no => $period) {
             $this->assertEquals($period->getEnd()->format('Y-m-d'), $dates[$no]);
             $this->assertEquals($period->getLength(), $periodLength[$no]);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_EXACT), $numPeriods[$no]);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_EXACT_INTEREST), $noOfPayments);
-            $this->assertEquals($periodCalculator->getNumberOfPeriods($period, $periodCalculator::CALCULATION_TYPE_ANNUITY), $noOfPayments);
+            $this->assertEquals($paymentPeriods->getNumberOfPeriods($period, $paymentPeriods::CALCULATION_TYPE_EXACT), $numPeriods[$no]);
+            $this->assertEquals($paymentPeriods->getNumberOfPeriods($period, $paymentPeriods::CALCULATION_TYPE_EXACT_INTEREST), $noOfPayments);
+            $this->assertEquals($paymentPeriods->getNumberOfPeriods($period, $paymentPeriods::CALCULATION_TYPE_ANNUITY), $noOfPayments);
         }
     }
 

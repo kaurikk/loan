@@ -12,28 +12,27 @@ class PaymentsCalculator implements PaymentsCalculatorInterface
 
     /**
      * PaymentsCalculator constructor.
-     * @param PeriodCalculatorInterface $periodCalculator
+     * @param PaymentPeriodsInterface $paymentPeriods
      * @param PaymentAmountCalculatorInterface $paymentAmountCalculator
      * @param InterestAmountCalculatorInterface $interestAmountCalculator
      * @param float $amountOfPrincipal
      * @param float $yearlyInterestRate interest rate for 360 days
      */
     public function __construct(
-        PeriodCalculatorInterface $periodCalculator,
+        PaymentPeriodsInterface $paymentPeriods,
         PaymentAmountCalculatorInterface $paymentAmountCalculator,
         InterestAmountCalculatorInterface $interestAmountCalculator,
         $amountOfPrincipal,
         $yearlyInterestRate
     ) {
-        $periods = $periodCalculator->getPeriods();
-        $numberOfPayments = count($periods);
+        $numberOfPayments = $paymentPeriods->getNoOfPeriods();
 
         $principalLeft = $amountOfPrincipal;
-        $calculationType = $periodCalculator::CALCULATION_TYPE_ANNUITY;
+        $calculationType = $paymentPeriods::CALCULATION_TYPE_ANNUITY;
 
-        foreach ($periods as $key => $period) {
-            $ratePerPeriod = $periodCalculator->getRatePerPeriod($period, $yearlyInterestRate, $calculationType);
-            $numberOfPeriods = $periodCalculator->getNumberOfPeriods($period, $calculationType);
+        foreach ($paymentPeriods->getPeriods() as $key => $period) {
+            $ratePerPeriod = $paymentPeriods->getRatePerPeriod($period, $yearlyInterestRate, $calculationType);
+            $numberOfPeriods = $paymentPeriods->getNumberOfPeriods($period, $calculationType);
 
             /**
              * Calculate payment amount

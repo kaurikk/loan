@@ -5,8 +5,11 @@ namespace Kauri\Loan\Test;
 
 use Kauri\Loan\InterestAmountCalculator;
 use Kauri\Loan\PaymentAmountCalculator;
+use Kauri\Loan\PaymentPeriodsFactory;
 use Kauri\Loan\PaymentsCalculator;
 use Kauri\Loan\PaymentDateCalculator;
+use Kauri\Loan\PaymentScheduleConfig;
+use Kauri\Loan\PaymentScheduleFactory;
 use Kauri\Loan\PeriodCalculator;
 
 class PaymentsCalculatorTest extends \PHPUnit_Framework_TestCase
@@ -23,10 +26,15 @@ class PaymentsCalculatorTest extends \PHPUnit_Framework_TestCase
         $paymentAmountCalculator = new PaymentAmountCalculator;
         $interestAmountCalculator = new InterestAmountCalculator;
 
-        $scheduler = new PaymentDateCalculator($noOfPayments, new \DateTime(), 'P3D');
-        $periodCalculator = new PeriodCalculator($scheduler);
+        $config = new PaymentScheduleConfig($noOfPayments, new \DateTime(), 'P3D');
 
-        $paymentsCalculator = new PaymentsCalculator($periodCalculator, $paymentAmountCalculator,
+        $schedule = PaymentScheduleFactory::generate($config);
+
+        $periods = PaymentPeriodsFactory::generate($schedule);
+
+        $paymentsCalculator = new PaymentsCalculator(
+            $periods,
+            $paymentAmountCalculator,
             $interestAmountCalculator,
             $principal, $interestRate);
 
