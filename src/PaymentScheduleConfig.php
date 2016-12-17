@@ -67,7 +67,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
     public function getStartDate()
     {

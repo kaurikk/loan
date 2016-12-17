@@ -29,10 +29,10 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
     }
 
     /**
-     * @param $periodStart
-     * @return mixed
+     * @param \DateTimeInterface $periodStart
+     * @return \DateTimeInterface
      */
-    private static function calculatePeriodStart($periodStart)
+    private static function calculatePeriodStart(\DateTimeInterface $periodStart)
     {
         $periodStart = clone $periodStart;
         // Move to next day
@@ -42,10 +42,10 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
     }
 
     /**
-     * @param $paymentDate
-     * @return mixed
+     * @param \DateTimeInterface $paymentDate
+     * @return \DateTimeInterface
      */
-    private static function calculatePeriodEnd($paymentDate)
+    private static function calculatePeriodEnd(\DateTimeInterface $paymentDate)
     {
         $periodEnd = clone $paymentDate;
         // Move to the end of the day
