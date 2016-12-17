@@ -43,15 +43,16 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     private function extractIntervalLength(\DateInterval $dateInterval)
     {
         $intervalLength = 0;
+        $intervalMultiplier = array(
+            'd' => 1,
+            'm' => 30,
+            'y' => 30 * 12
+        );
 
-        if ($dateInterval->format('%d') > 0) {
-            $intervalLength = $intervalLength + (int) $dateInterval->format('%d');
-        }
-        if ($dateInterval->format('%m') > 0) {
-            $intervalLength = $intervalLength + (int) $dateInterval->format('%m') * 30;
-        }
-        if ($dateInterval->format('%y') > 0) {
-            $intervalLength = $intervalLength + (int) $dateInterval->format('%y') * 30 * 12;
+        foreach ($intervalMultiplier as $pattern => $multiplier) {
+            if ($dateInterval->format('%' . $pattern) > 0) {
+                $intervalLength = $intervalLength + (int) $dateInterval->format('%' . $pattern) * $multiplier;
+            }
         }
 
         return (int) $intervalLength;

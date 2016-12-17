@@ -19,18 +19,17 @@ class PaymentScheduleFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $config = new PaymentScheduleConfig($noOfPayments, $startDate, $dateIntervalPattern);
         $schedule = PaymentScheduleFactory::generate($config);
+        $paymentDates = $schedule->getPaymentDates();
 
         /**
          * @var int $k
          * @var \DateTime $item
          */
-        foreach ($schedule->getPaymentDates() as $k => $item) {
+        foreach ($paymentDates as $k => $item) {
             if ($item instanceof \DateTimeInterface) {
                 $this->assertEquals($item->format('Y-m-d'), $dates[$k]);
             }
         }
-
-        $this->assertEquals(end($dates), $item->format('Y-m-d'));
     }
 
     public function datesProvider()
