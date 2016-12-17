@@ -4,6 +4,7 @@ namespace Kauri\Loan;
 
 /**
  * Class PaymentScheduleFactory
+ * @package Kauri\Loan
  */
 class PaymentScheduleFactory implements PaymentScheduleFactoryInterface
 {

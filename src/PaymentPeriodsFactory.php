@@ -3,11 +3,15 @@
 namespace Kauri\Loan;
 
 
+/**
+ * Class PaymentPeriodsFactory
+ * @package Kauri\Loan
+ */
 class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
 {
     /**
      * @param PaymentScheduleInterface $paymentSchedule
-     * @return PaymentPeriods
+     * @return PaymentPeriodsInterface
      */
     public static function generate(PaymentScheduleInterface $paymentSchedule)
     {

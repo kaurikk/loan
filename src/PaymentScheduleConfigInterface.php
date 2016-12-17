@@ -5,6 +5,13 @@ namespace Kauri\Loan;
 
 interface PaymentScheduleConfigInterface
 {
+    /**
+     * PaymentScheduleConfigInterface constructor.
+     * @param int $noOfPayments
+     * @param \DateTimeInterface $startDate
+     * @param string $dateIntervalPattern
+     * @param \DateTimeInterface|null $firstPaymentDate
+     */
     public function __construct(
         $noOfPayments,
         \DateTimeInterface $startDate,
@@ -13,12 +20,12 @@ interface PaymentScheduleConfigInterface
     );
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getNoOfPayments();
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
     public function getStartDate();
 

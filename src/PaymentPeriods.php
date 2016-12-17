@@ -2,7 +2,10 @@
 
 namespace Kauri\Loan;
 
-
+/**
+ * Class PaymentPeriods
+ * @package Kauri\Loan
+ */
 class PaymentPeriods implements PaymentPeriodsInterface
 {
     /**
@@ -27,17 +30,17 @@ class PaymentPeriods implements PaymentPeriodsInterface
      */
     private $totalLength = 0;
     /**
-     * @var
+     * @var float|int
      */
     private $averagePeriod;
     /**
-     * @var
+     * @var int
      */
     private $averageTotalPeriod;
 
     /**
      * PaymentPeriods constructor.
-     * @param $averagePeriod
+     * @param float|int $averagePeriod
      */
     public function __construct($averagePeriod)
     {
@@ -46,7 +49,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
 
     /**
      * @param PeriodInterface $period
-     * @param null $sequenceNo
+     * @param null|int $sequenceNo
      */
     public function add(PeriodInterface $period, $sequenceNo = null)
     {
@@ -60,7 +63,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
 
     /**
      * @param PeriodInterface $period
-     * @param $yearlyInterestRate
+     * @param float|int $yearlyInterestRate
      * @param int $calculationType
      * @return float|int
      * @throws \Exception

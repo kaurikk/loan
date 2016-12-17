@@ -2,19 +2,31 @@
 
 namespace Kauri\Loan;
 
-
+/**
+ * Class Period
+ * @package Kauri\Loan
+ */
 class Period implements PeriodInterface
 {
+    /**
+     * @var \DateTimeInterface
+     */
     private $start;
+    /**
+     * @var \DateTimeInterface
+     */
     private $end;
+    /**
+     * @var int
+     */
     private $length;
 
     /**
      * Period constructor.
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
      */
-    public function __construct(\DateTime $start, \DateTime $end)
+    public function __construct(\DateTimeInterface $start, \DateTimeInterface $end)
     {
         $this->start = $start;
         $this->end = $end;
@@ -30,7 +42,7 @@ class Period implements PeriodInterface
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
     public function getEnd()
     {
@@ -38,11 +50,11 @@ class Period implements PeriodInterface
     }
 
     /**
-     * @param $periodStart
-     * @param $periodEnd
+     * @param \DateTimeInterface $periodStart
+     * @param \DateTimeInterface $periodEnd
      * @return int
      */
-    private static function calculatePeriodLength($periodStart, $periodEnd)
+    private static function calculatePeriodLength(\DateTimeInterface$periodStart, \DateTimeInterface $periodEnd)
     {
         $diff = (int) $periodEnd->diff($periodStart)->days + 1;
         return $diff;

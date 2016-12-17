@@ -13,9 +13,9 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
 
     /**
      * PaymentScheduleConfig constructor.
-     * @param $noOfPayments
+     * @param int $noOfPayments
      * @param \DateTimeInterface $startDate
-     * @param $dateIntervalPattern
+     * @param string $dateIntervalPattern
      * @param \DateTimeInterface|null $firstPaymentDate
      */
     public function __construct(
@@ -59,7 +59,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getNoOfPayments()
     {
