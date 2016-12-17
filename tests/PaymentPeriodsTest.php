@@ -11,24 +11,28 @@ class PaymentPeriodsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider periodsData
-     * @param $averagePeriod
+     * @param $averagePeriodLength
      * @param $paymentPeriods
      */
-    public function testPaymentPeriods($averagePeriod, $paymentPeriods)
+    public function testPaymentPeriods($averagePeriodLength, $paymentPeriods)
     {
-        $periodsCollection = new PaymentPeriods($averagePeriod);
+        $periodsCollection = new PaymentPeriods($averagePeriodLength);
         $noOfPayments = count($paymentPeriods);
         $totalLength = 0;
+        $periodLength = 0;
 
         $this->assertEquals(0, $periodsCollection->getNoOfPeriods());
         $this->assertTrue(empty($periodsCollection->getPeriods()));
 
-        foreach ($paymentPeriods as $length) {
-            $date = new \DateTime('2000-01-01');
-            $period = new Period($date, $date, $length);
-            $periodsCollection->add($period);
-            $totalLength = $totalLength + $length;
+        foreach ($paymentPeriods as $periodLength) {
+            $periodMock = $this->getMockPeriod($periodLength);
+            $periodsCollection->add($periodMock);
+            $totalLength = $totalLength + $periodLength;
         }
+
+        $periods = $periodsCollection->getPeriods();
+        $period = current($periods);
+        $length = $period->getLength();
 
         $this->assertEquals($noOfPayments, $periodsCollection->getNoOfPeriods());
         $this->assertTrue(!empty($periodsCollection->getPeriods()));
@@ -46,7 +50,7 @@ class PaymentPeriodsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($length,
             $periodsCollection->getRatePerPeriod($period, 360,
                 $periodsCollection::CALCULATION_TYPE_EXACT_INTEREST));
-        $this->assertEquals($averagePeriod,
+        $this->assertEquals($averagePeriodLength,
             $periodsCollection->getRatePerPeriod($period, 360,
                 $periodsCollection::CALCULATION_TYPE_ANNUITY));
     }
@@ -65,8 +69,7 @@ class PaymentPeriodsTest extends \PHPUnit_Framework_TestCase
     public function testRatePerPeriodException()
     {
         $periodsCollection = new PaymentPeriods(1);
-        $periodsCollection->getRatePerPeriod(new Period(new \DateTime(), new \DateTime(), 3), 10, 10);
-
+        $periodsCollection->getRatePerPeriod($this->getMockPeriod(3), 10, 10);
     }
 
     /**
@@ -75,8 +78,16 @@ class PaymentPeriodsTest extends \PHPUnit_Framework_TestCase
     public function testNumberOfPeriodsException()
     {
         $periodsCollection = new PaymentPeriods(1);
-        $periodsCollection->getNumberOfPeriods(new Period(new \DateTime(), new \DateTime(), 3), 10);
+        $periodsCollection->getNumberOfPeriods($this->getMockPeriod(3), 10);
+    }
 
+    private function getMockPeriod($length)
+    {
+        $stub = $this->createMock(Period::class);
+        $stub->method('getLength')
+            ->willReturn($length);
+
+        return $stub;
     }
 
 }
