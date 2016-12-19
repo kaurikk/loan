@@ -32,7 +32,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
      */
     private $totalLength = 0;
     /**
-     * @var float|int
+     * @var int
      */
     private $averagePeriod;
     /**
@@ -42,9 +42,9 @@ class PaymentPeriods implements PaymentPeriodsInterface
 
     /**
      * PaymentPeriods constructor.
-     * @param float|int $averagePeriod
+     * @param int $averagePeriod
      */
-    public function __construct(float $averagePeriod)
+    public function __construct(int $averagePeriod)
     {
         $this->averagePeriod = $averagePeriod;
     }
@@ -65,9 +65,9 @@ class PaymentPeriods implements PaymentPeriodsInterface
 
     /**
      * @param PeriodInterface $period
-     * @param float|int $yearlyInterestRate
+     * @param float $yearlyInterestRate
      * @param int $calculationType
-     * @return float|int
+     * @return float
      * @throws \Exception
      */
     public function getRatePerPeriod(

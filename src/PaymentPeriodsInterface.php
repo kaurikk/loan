@@ -12,9 +12,9 @@ interface PaymentPeriodsInterface
 {
     /**
      * PaymentPeriodsInterface constructor.
-     * @param int|float $averagePeriod
+     * @param int $averagePeriod
      */
-    public function __construct(float $averagePeriod);
+    public function __construct(int $averagePeriod);
 
     /**
      * @param PeriodInterface $period
