@@ -21,7 +21,6 @@ class PaymentsScheduleTest extends \PHPUnit_Framework_TestCase
         $paymentSchedule = new PaymentSchedule($config);
         $paymentSchedule->add($paymentDate);
 
-        $this->assertEquals($paymentDate, $paymentSchedule->getLastPaymentDate());
         $this->assertEquals(1, $paymentSchedule->getNoOfPayments());
 
         foreach ($paymentSchedule->getPaymentDates() as $date) {

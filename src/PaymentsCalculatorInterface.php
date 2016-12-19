@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
-
+/**
+ * Interface PaymentsCalculatorInterface
+ * @package Kauri\Loan
+ */
 interface PaymentsCalculatorInterface
 {
     /**
@@ -10,20 +15,20 @@ interface PaymentsCalculatorInterface
      * @param PaymentPeriodsInterface $paymentPeriods
      * @param PaymentAmountCalculatorInterface $paymentAmountCalculator
      * @param InterestAmountCalculatorInterface $interestAmountCalculator
-     * @param float $amountOfPrincipal
-     * @param float $yearlyInterestRate
+     * @param float|int $amountOfPrincipal
+     * @param float|int $yearlyInterestRate
      */
     public function __construct(
         PaymentPeriodsInterface $paymentPeriods,
         PaymentAmountCalculatorInterface $paymentAmountCalculator,
         InterestAmountCalculatorInterface $interestAmountCalculator,
-        $amountOfPrincipal,
-        $yearlyInterestRate
+        float $amountOfPrincipal,
+        float $yearlyInterestRate
     );
 
     /**
      * @return array
      */
-    public function getPayments();
+    public function getPayments(): array;
 
 }

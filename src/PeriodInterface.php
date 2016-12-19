@@ -1,14 +1,27 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
 interface PeriodInterface
 {
-    public function __construct(\DateTime $start, \DateTime $end, $length);
+    /**
+     * PeriodInterface constructor.
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
+     */
+    public function __construct(\DateTimeInterface $start, \DateTimeInterface $end);
 
-    public function getLength();
+    /**
+     * @return int
+     */
+    public function getLength(): int;
 
-    public function getEnd();
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getEnd(): \DateTimeInterface;
 
 }

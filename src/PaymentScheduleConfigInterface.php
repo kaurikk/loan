@@ -1,34 +1,43 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
 interface PaymentScheduleConfigInterface
 {
+    /**
+     * PaymentScheduleConfigInterface constructor.
+     * @param int $noOfPayments
+     * @param \DateTimeInterface $startDate
+     * @param string $dateIntervalPattern
+     * @param \DateTimeInterface|null $firstPaymentDate
+     */
     public function __construct(
-        $noOfPayments,
+        int $noOfPayments,
         \DateTimeInterface $startDate,
-        $dateIntervalPattern,
+        string $dateIntervalPattern,
         \DateTimeInterface $firstPaymentDate = null
     );
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getNoOfPayments();
+    public function getNoOfPayments(): int;
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getStartDate();
+    public function getStartDate(): \DateTimeInterface;
 
     /**
      * @return int
      */
-    public function getAverageIntervalLength();
+    public function getAverageIntervalLength(): int;
 
     /**
      * @return \DateInterval
      */
-    public function getDateInterval();
+    public function getDateInterval(): \DateInterval;
 }

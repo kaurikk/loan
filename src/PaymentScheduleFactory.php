@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 /**
  * Class PaymentScheduleFactory
+ * @package Kauri\Loan
  */
 class PaymentScheduleFactory implements PaymentScheduleFactoryInterface
 {
     /**
      * @param PaymentScheduleConfigInterface $paymentScheduleConfig
-     * @return PaymentSchedule
+     * @return PaymentScheduleInterface
      */
-    public static function generate(PaymentScheduleConfigInterface $paymentScheduleConfig)
+    public static function generate(PaymentScheduleConfigInterface $paymentScheduleConfig): PaymentScheduleInterface
     {
         $schedule = new PaymentSchedule($paymentScheduleConfig);
 

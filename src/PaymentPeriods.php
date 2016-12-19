@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
-
+/**
+ * Class PaymentPeriods
+ * @package Kauri\Loan
+ */
 class PaymentPeriods implements PaymentPeriodsInterface
 {
     /**
@@ -27,28 +32,28 @@ class PaymentPeriods implements PaymentPeriodsInterface
      */
     private $totalLength = 0;
     /**
-     * @var
+     * @var int
      */
     private $averagePeriod;
     /**
-     * @var
+     * @var int
      */
     private $averageTotalPeriod;
 
     /**
      * PaymentPeriods constructor.
-     * @param $averagePeriod
+     * @param int $averagePeriod
      */
-    public function __construct($averagePeriod)
+    public function __construct(int $averagePeriod)
     {
         $this->averagePeriod = $averagePeriod;
     }
 
     /**
      * @param PeriodInterface $period
-     * @param null $sequenceNo
+     * @param int|null $sequenceNo
      */
-    public function add(PeriodInterface $period, $sequenceNo = null)
+    public function add(PeriodInterface $period, int $sequenceNo = null): void
     {
         if (is_null($sequenceNo)) {
             $sequenceNo = $this->getNoOfPeriods() + 1;
@@ -60,16 +65,16 @@ class PaymentPeriods implements PaymentPeriodsInterface
 
     /**
      * @param PeriodInterface $period
-     * @param $yearlyInterestRate
+     * @param float $yearlyInterestRate
      * @param int $calculationType
-     * @return float|int
+     * @return float
      * @throws \Exception
      */
     public function getRatePerPeriod(
         PeriodInterface $period,
-        $yearlyInterestRate,
-        $calculationType = self::CALCULATION_TYPE_ANNUITY
-    ) {
+        float $yearlyInterestRate,
+        int $calculationType = self::CALCULATION_TYPE_ANNUITY
+    ): float {
         switch ($calculationType) {
             case self::CALCULATION_TYPE_EXACT:
             case self::CALCULATION_TYPE_EXACT_INTEREST:
@@ -93,8 +98,10 @@ class PaymentPeriods implements PaymentPeriodsInterface
      * @return float|int
      * @throws \Exception
      */
-    public function getNumberOfPeriods(PeriodInterface $period, $calculationType = self::CALCULATION_TYPE_ANNUITY)
-    {
+    public function getNumberOfPeriods(
+        PeriodInterface $period,
+        int $calculationType = self::CALCULATION_TYPE_ANNUITY
+    ): float {
         switch ($calculationType) {
             case self::CALCULATION_TYPE_EXACT:
                 $currentPeriod = $period->getLength();
@@ -117,7 +124,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
     /**
      * @return array
      */
-    public function getPeriods()
+    public function getPeriods(): array
     {
         return $this->periods;
     }
@@ -125,7 +132,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
     /**
      * @return int
      */
-    public function getNoOfPeriods()
+    public function getNoOfPeriods(): int
     {
         return count($this->periods);
     }

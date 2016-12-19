@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -11,5 +13,5 @@ interface PaymentAmountCalculatorInterface
      * @param float $numberOfPeriods
      * @return float
      */
-    public function getPaymentAmount($presentValue, $ratePerPeriod, $numberOfPeriods);
+    public function getPaymentAmount(float $presentValue, float $ratePerPeriod, float $numberOfPeriods): float;
 }

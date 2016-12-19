@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
+/**
+ * Class PaymentPeriodsFactory
+ * @package Kauri\Loan
+ */
 class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
 {
     /**
      * @param PaymentScheduleInterface $paymentSchedule
-     * @return PaymentPeriods
+     * @return PaymentPeriodsInterface
      */
-    public static function generate(PaymentScheduleInterface $paymentSchedule)
+    public static function generate(PaymentScheduleInterface $paymentSchedule): PaymentPeriodsInterface
     {
         $periods = new PaymentPeriods($paymentSchedule->getConfig()->getAverageIntervalLength());
 
@@ -18,9 +24,8 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
         foreach ($paymentSchedule->getPaymentDates() as $paymentNo => $paymentDate) {
             $periodStart = self::calculatePeriodStart($periodStart);
             $periodEnd = self::calculatePeriodEnd($paymentDate);
-            $length = self::calculatePeriodLength($periodStart, $periodEnd);
 
-            $period = new Period($periodStart, $periodEnd, $length);
+            $period = new Period($periodStart, $periodEnd);
             $periods->add($period, $paymentNo);
 
             $periodStart = clone $paymentDate;
@@ -30,21 +35,10 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
     }
 
     /**
-     * @param $periodStart
-     * @param $periodEnd
-     * @return int
+     * @param \DateTimeInterface $periodStart
+     * @return \DateTimeInterface
      */
-    private static function calculatePeriodLength($periodStart, $periodEnd)
-    {
-        $diff = (int) $periodEnd->diff($periodStart)->days + 1;
-        return $diff;
-    }
-
-    /**
-     * @param $periodStart
-     * @return mixed
-     */
-    private static function calculatePeriodStart($periodStart)
+    private static function calculatePeriodStart(\DateTimeInterface $periodStart): \DateTimeInterface
     {
         $periodStart = clone $periodStart;
         // Move to next day
@@ -54,10 +48,10 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
     }
 
     /**
-     * @param $paymentDate
-     * @return mixed
+     * @param \DateTimeInterface $paymentDate
+     * @return \DateTimeInterface
      */
-    private static function calculatePeriodEnd($paymentDate)
+    private static function calculatePeriodEnd(\DateTimeInterface $paymentDate): \DateTimeInterface
     {
         $periodEnd = clone $paymentDate;
         // Move to the end of the day

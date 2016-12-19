@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
-
+/**
+ * Class PaymentSchedule
+ * @package Kauri\Loan
+ */
 class PaymentSchedule implements PaymentScheduleInterface
 {
     /**
@@ -24,7 +29,11 @@ class PaymentSchedule implements PaymentScheduleInterface
         $this->config = $config;
     }
 
-    public function add(\DateTime $paymentDate, $paymentSequenceNo = null)
+    /**
+     * @param \DateTimeInterface $paymentDate
+     * @param null|int $paymentSequenceNo
+     */
+    public function add(\DateTimeInterface $paymentDate, int $paymentSequenceNo = null): void
     {
         $this->paymentDates[$paymentSequenceNo] = $paymentDate;
     }
@@ -32,23 +41,15 @@ class PaymentSchedule implements PaymentScheduleInterface
     /**
      * @return array
      */
-    public function getPaymentDates()
+    public function getPaymentDates(): array
     {
         return $this->paymentDates;
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getLastPaymentDate()
-    {
-        return end($this->paymentDates);
-    }
-
-    /**
      * @return int
      */
-    public function getNoOfPayments()
+    public function getNoOfPayments(): int
     {
         return (int) count($this->paymentDates);
     }
@@ -56,7 +57,7 @@ class PaymentSchedule implements PaymentScheduleInterface
     /**
      * @return PaymentScheduleConfigInterface
      */
-    public function getConfig()
+    public function getConfig(): PaymentScheduleConfigInterface
     {
         return $this->config;
     }
