@@ -33,7 +33,7 @@ class PaymentSchedule implements PaymentScheduleInterface
      * @param \DateTimeInterface $paymentDate
      * @param null|int $paymentSequenceNo
      */
-    public function add(\DateTimeInterface $paymentDate, int $paymentSequenceNo = null)
+    public function add(\DateTimeInterface $paymentDate, int $paymentSequenceNo = null): void
     {
         $this->paymentDates[$paymentSequenceNo] = $paymentDate;
     }

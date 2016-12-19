@@ -20,7 +20,7 @@ interface PaymentPeriodsInterface
      * @param PeriodInterface $period
      * @param int|null $sequenceNo
      */
-    public function add(PeriodInterface $period, int $sequenceNo = null);
+    public function add(PeriodInterface $period, int $sequenceNo = null): void;
 
     /**
      * @param PeriodInterface $period
@@ -40,10 +40,10 @@ interface PaymentPeriodsInterface
     /**
      * @return array
      */
-    public function getPeriods();
+    public function getPeriods(): array;
 
     /**
      * @return int
      */
-    public function getNoOfPeriods();
+    public function getNoOfPeriods(): int;
 }

@@ -53,7 +53,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
      * @param PeriodInterface $period
      * @param int|null $sequenceNo
      */
-    public function add(PeriodInterface $period, int $sequenceNo = null)
+    public function add(PeriodInterface $period, int $sequenceNo = null): void
     {
         if (is_null($sequenceNo)) {
             $sequenceNo = $this->getNoOfPeriods() + 1;
