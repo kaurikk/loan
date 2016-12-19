@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -19,9 +21,9 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
      * @param \DateTimeInterface|null $firstPaymentDate
      */
     public function __construct(
-        $noOfPayments,
+        int $noOfPayments,
         \DateTimeInterface $startDate,
-        $dateIntervalPattern,
+        string $dateIntervalPattern,
         \DateTimeInterface $firstPaymentDate = null
     ) {
         $this->noOfPayments = $noOfPayments;
@@ -40,7 +42,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
      * @param \DateInterval $dateInterval
      * @return int
      */
-    private function extractIntervalLength(\DateInterval $dateInterval)
+    private function extractIntervalLength(\DateInterval $dateInterval): int
     {
         $intervalLength = 0;
         $intervalMultiplier = array(
@@ -59,9 +61,9 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function getNoOfPayments()
+    public function getNoOfPayments(): int
     {
         return $this->noOfPayments;
     }
@@ -69,7 +71,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     /**
      * @return \DateTimeInterface
      */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeInterface
     {
         return $this->startDate;
     }
@@ -77,7 +79,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     /**
      * @return int
      */
-    public function getAverageIntervalLength()
+    public function getAverageIntervalLength(): int
     {
         return $this->averageIntervalLength;
     }
@@ -85,7 +87,7 @@ class PaymentScheduleConfig implements PaymentScheduleConfigInterface
     /**
      * @return \DateInterval
      */
-    public function getDateInterval()
+    public function getDateInterval(): \DateInterval
     {
         return $this->dateInterval;
     }

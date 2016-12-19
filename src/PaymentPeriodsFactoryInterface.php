@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -10,9 +12,8 @@ namespace Kauri\Loan;
 interface PaymentPeriodsFactoryInterface
 {
     /**
-     * PeriodCalculatorInterface constructor.
      * @param PaymentScheduleInterface $paymentSchedule
      * @return PaymentPeriodsInterface
      */
-    public static function generate(PaymentScheduleInterface $paymentSchedule);
+    public static function generate(PaymentScheduleInterface $paymentSchedule): PaymentPeriodsInterface;
 }

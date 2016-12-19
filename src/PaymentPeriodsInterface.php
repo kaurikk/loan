@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 /**
@@ -12,28 +14,28 @@ interface PaymentPeriodsInterface
      * PaymentPeriodsInterface constructor.
      * @param int|float $averagePeriod
      */
-    public function __construct($averagePeriod);
+    public function __construct(float $averagePeriod);
 
     /**
      * @param PeriodInterface $period
-     * @param null|int $sequenceNo
+     * @param int|null $sequenceNo
      */
-    public function add(PeriodInterface $period, $sequenceNo = null);
+    public function add(PeriodInterface $period, int $sequenceNo = null);
 
     /**
      * @param PeriodInterface $period
-     * @param float|int $yearlyInterestRate
+     * @param float $yearlyInterestRate
+     * @param int $calculationType
+     * @return float
+     */
+    public function getRatePerPeriod(PeriodInterface $period, float $yearlyInterestRate, int $calculationType): float;
+
+    /**
+     * @param PeriodInterface $period
      * @param int $calculationType
      * @return float|int
      */
-    public function getRatePerPeriod(PeriodInterface $period, $yearlyInterestRate, $calculationType);
-
-    /**
-     * @param PeriodInterface $period
-     * @param int $calculationType
-     * @return float|int
-     */
-    public function getNumberOfPeriods(PeriodInterface $period, $calculationType);
+    public function getNumberOfPeriods(PeriodInterface $period, int $calculationType): float;
 
     /**
      * @return array

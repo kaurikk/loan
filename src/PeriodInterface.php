@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -15,11 +17,11 @@ interface PeriodInterface
     /**
      * @return int
      */
-    public function getLength();
+    public function getLength(): int;
 
     /**
      * @return \DateTimeInterface
      */
-    public function getEnd();
+    public function getEnd(): \DateTimeInterface;
 
 }

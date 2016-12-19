@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -12,7 +14,7 @@ class PaymentAmountCalculator implements PaymentAmountCalculatorInterface
      * @param float $numberOfPeriods
      * @return float
      */
-    public function getPaymentAmount($presentValue, $ratePerPeriod, $numberOfPeriods)
+    public function getPaymentAmount(float $presentValue, float $ratePerPeriod, float $numberOfPeriods): float
     {
         if ($ratePerPeriod > 0) {
             $payment = (($ratePerPeriod / 100) * $presentValue) / (1 - pow(1 + ($ratePerPeriod / 100),

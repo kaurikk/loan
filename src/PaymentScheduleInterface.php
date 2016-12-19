@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -15,16 +17,16 @@ interface PaymentScheduleInterface
      * @param \DateTimeInterface $paymentDate
      * @param null|int $paymentSequenceNo
      */
-    public function add(\DateTimeInterface $paymentDate, $paymentSequenceNo = null);
+    public function add(\DateTimeInterface $paymentDate, int $paymentSequenceNo = null);
 
     /**
      * @return PaymentScheduleConfigInterface
      */
-    public function getConfig();
+    public function getConfig(): PaymentScheduleConfigInterface;
 
     /**
      * @return array
      */
-    public function getPaymentDates();
+    public function getPaymentDates(): array;
 
 }

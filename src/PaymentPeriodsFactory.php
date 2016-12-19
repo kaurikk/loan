@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -13,7 +15,7 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
      * @param PaymentScheduleInterface $paymentSchedule
      * @return PaymentPeriodsInterface
      */
-    public static function generate(PaymentScheduleInterface $paymentSchedule)
+    public static function generate(PaymentScheduleInterface $paymentSchedule): PaymentPeriodsInterface
     {
         $periods = new PaymentPeriods($paymentSchedule->getConfig()->getAverageIntervalLength());
 
@@ -36,7 +38,7 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
      * @param \DateTimeInterface $periodStart
      * @return \DateTimeInterface
      */
-    private static function calculatePeriodStart(\DateTimeInterface $periodStart)
+    private static function calculatePeriodStart(\DateTimeInterface $periodStart): \DateTimeInterface
     {
         $periodStart = clone $periodStart;
         // Move to next day
@@ -49,7 +51,7 @@ class PaymentPeriodsFactory implements PaymentPeriodsFactoryInterface
      * @param \DateTimeInterface $paymentDate
      * @return \DateTimeInterface
      */
-    private static function calculatePeriodEnd(\DateTimeInterface $paymentDate)
+    private static function calculatePeriodEnd(\DateTimeInterface $paymentDate): \DateTimeInterface
     {
         $periodEnd = clone $paymentDate;
         // Move to the end of the day

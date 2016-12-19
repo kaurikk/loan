@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 /**
@@ -36,7 +38,7 @@ class Period implements PeriodInterface
     /**
      * @return int
      */
-    public function getLength()
+    public function getLength(): int
     {
         return $this->length;
     }
@@ -44,7 +46,7 @@ class Period implements PeriodInterface
     /**
      * @return \DateTimeInterface
      */
-    public function getEnd()
+    public function getEnd(): \DateTimeInterface
     {
         return $this->end;
     }
@@ -54,7 +56,7 @@ class Period implements PeriodInterface
      * @param \DateTimeInterface $periodEnd
      * @return int
      */
-    private static function calculatePeriodLength(\DateTimeInterface$periodStart, \DateTimeInterface $periodEnd)
+    private static function calculatePeriodLength(\DateTimeInterface $periodStart, \DateTimeInterface $periodEnd): int
     {
         $diff = (int) $periodEnd->diff($periodStart)->days + 1;
         return $diff;

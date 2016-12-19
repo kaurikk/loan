@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 /**
@@ -42,16 +44,16 @@ class PaymentPeriods implements PaymentPeriodsInterface
      * PaymentPeriods constructor.
      * @param float|int $averagePeriod
      */
-    public function __construct($averagePeriod)
+    public function __construct(float $averagePeriod)
     {
         $this->averagePeriod = $averagePeriod;
     }
 
     /**
      * @param PeriodInterface $period
-     * @param null|int $sequenceNo
+     * @param int|null $sequenceNo
      */
-    public function add(PeriodInterface $period, $sequenceNo = null)
+    public function add(PeriodInterface $period, int $sequenceNo = null)
     {
         if (is_null($sequenceNo)) {
             $sequenceNo = $this->getNoOfPeriods() + 1;
@@ -70,9 +72,9 @@ class PaymentPeriods implements PaymentPeriodsInterface
      */
     public function getRatePerPeriod(
         PeriodInterface $period,
-        $yearlyInterestRate,
-        $calculationType = self::CALCULATION_TYPE_ANNUITY
-    ) {
+        float $yearlyInterestRate,
+        int $calculationType = self::CALCULATION_TYPE_ANNUITY
+    ): float {
         switch ($calculationType) {
             case self::CALCULATION_TYPE_EXACT:
             case self::CALCULATION_TYPE_EXACT_INTEREST:
@@ -96,8 +98,10 @@ class PaymentPeriods implements PaymentPeriodsInterface
      * @return float|int
      * @throws \Exception
      */
-    public function getNumberOfPeriods(PeriodInterface $period, $calculationType = self::CALCULATION_TYPE_ANNUITY)
-    {
+    public function getNumberOfPeriods(
+        PeriodInterface $period,
+        int $calculationType = self::CALCULATION_TYPE_ANNUITY
+    ): float {
         switch ($calculationType) {
             case self::CALCULATION_TYPE_EXACT:
                 $currentPeriod = $period->getLength();
@@ -120,7 +124,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
     /**
      * @return array
      */
-    public function getPeriods()
+    public function getPeriods(): array
     {
         return $this->periods;
     }
@@ -128,7 +132,7 @@ class PaymentPeriods implements PaymentPeriodsInterface
     /**
      * @return int
      */
-    public function getNoOfPeriods()
+    public function getNoOfPeriods(): int
     {
         return count($this->periods);
     }

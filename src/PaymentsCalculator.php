@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Kauri\Loan;
 
 
@@ -22,8 +24,8 @@ class PaymentsCalculator implements PaymentsCalculatorInterface
         PaymentPeriodsInterface $paymentPeriods,
         PaymentAmountCalculatorInterface $paymentAmountCalculator,
         InterestAmountCalculatorInterface $interestAmountCalculator,
-        $amountOfPrincipal,
-        $yearlyInterestRate
+        float $amountOfPrincipal,
+        float $yearlyInterestRate
     ) {
         $numberOfPayments = $paymentPeriods->getNoOfPeriods();
 
@@ -77,7 +79,7 @@ class PaymentsCalculator implements PaymentsCalculatorInterface
     /**
      * @return array
      */
-    public function getPayments()
+    public function getPayments(): array
     {
         return $this->payments;
     }
