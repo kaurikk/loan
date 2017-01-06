@@ -24,4 +24,9 @@ interface PeriodInterface
      */
     public function getEnd(): \DateTimeInterface;
 
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getStart(): \DateTimeInterface;
+
 }

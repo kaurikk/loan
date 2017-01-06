@@ -51,6 +51,11 @@ class Period implements PeriodInterface
         return $this->end;
     }
 
+    public function getStart(): \DateTimeInterface
+    {
+        return $this->start;
+    }
+
     /**
      * @param \DateTimeInterface $periodStart
      * @param \DateTimeInterface $periodEnd

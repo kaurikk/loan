@@ -41,4 +41,30 @@ class PaymentScheduleFactoryTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @dataProvider datesProvider
+     * @param $noOfPayments
+     * @param \DateTime $startDate
+     * @param $dateIntervalPattern
+     * @param array $dates
+     */
+    public function testFirstPaymentDate($noOfPayments, \DateTime $startDate, $dateIntervalPattern, array $dates)
+    {
+        $firstDate = new \DateTime(current($dates));
+        $config = new PaymentScheduleConfig($noOfPayments, $startDate, $dateIntervalPattern, $firstDate);
+        $schedule = PaymentScheduleFactory::generate($config);
+        $paymentDates = $schedule->getPaymentDates();
+
+        /**
+         * @var int $k
+         * @var \DateTime $item
+         */
+        foreach ($paymentDates as $k => $item) {
+            if ($item instanceof \DateTimeInterface) {
+                $this->assertEquals($item->format('Y-m-d'), $dates[$k]);
+            }
+        }
+
+    }
+
 }

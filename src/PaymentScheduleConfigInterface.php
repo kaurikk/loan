@@ -40,4 +40,9 @@ interface PaymentScheduleConfigInterface
      * @return \DateInterval
      */
     public function getDateInterval(): \DateInterval;
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getFirstPaymentDate(): ?\DateTimeInterface;
 }
